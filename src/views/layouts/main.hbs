@@ -1,52 +1,47 @@
-<!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page - Gaming Team</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
 
-<body>
+  <body>
 
     <!-- In case of error, you should display div with class "errorContainer" -->
     <!-- You can choose to display the first error or all of them (error message/s in your opinion) -->
 
-    {{#if error}}
-    <div>
-        <div class="errorContainer">
-            <p>{{error}}</p>
-        </div>
+    <!-- <div>
+            <div class="errorContainer">
+                <p>Error</p>
+            </div>
+        </div> -->
+
+    <div class="navigation">
+      <nav>
+        <img src="/static/images/logo.png" />
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/courses/catalog">All Courses</a></li>
+          {{#if user}}
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="#">Create Course Offers</a></li>
+          <li><a href="#">Logout</a></li>
+          {{else}}
+          <li><a href="auth/login">Login</a></li>
+          <li><a href="auth/register">Register</a></li>
+          {{/if}}
+        </ul>
+      </nav>
     </div>
-    {{/if}}
 
-    <header class="header">
-        <nav>
-            <img src="/static/images/logo.jpg" class="logo">
-            <ul>
+    <main>
+      {{{body}}}
+    </main>
 
-                <li><a href="/">Home</a></li>
-                <li><a href="/games/catalog">All Games Code</a></li>
-                {{#if user}}
-                <li><a href="/search">Search</a></li>
-                <li><a href="/games/create">Create Game Offer</a></li>
-                <li><a href="/auth/logout">Logout</a></li>
-                {{else}}
-                <li><a href="/auth/login">Login</a></li>
-                <li><a href="/auth/register">Register</a></li>
-                {{/if}}
-            </ul>
-        </nav>
-    </header>
-
-    {{{body}}}
-
-    <footer>
-        <p>Back-End 2023</p>
-    </footer>
-
-</body>
+    <footer>Back-End 2024</footer>
+  </body>
 
 </html>

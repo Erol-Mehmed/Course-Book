@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const gameService = require('../services/gameServices');
+const gameService = require('../services/courseServices');
 
 router.get('/', (req, res) => {
     res.render('home');

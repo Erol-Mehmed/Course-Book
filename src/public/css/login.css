@@ -1,21 +1,15 @@
-#login {
-  width: 100%;
-  height: 100vh;
-  background-image: url(/static/images/background-2.jpg);
-  background-position: center;
-  background-size: cover;
-  padding-top: 50px;
-}
-
 .login-box {
-  color: white;
+  color: black;
   width: 360px;
   height: 330px;
   margin: auto;
-  background-color: #096BAB;
-  border: 2px solid #2e87cb;
+  margin-top: 4%;
+  background-color: #ffeae7c6;
+  border: 1px solid black;
   border-radius: 20px;
-  margin-top: 5%;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .login-box h1 {
@@ -48,8 +42,6 @@ form input {
   border: 1px solid gray;
   border-radius: 8px;
   outline: none;
-  color: black;
-
 }
 
 input[type="submit"] {
@@ -57,7 +49,7 @@ input[type="submit"] {
   height: 35px;
   margin-top: 20px;
   border: none;
-  background-color: #050912;
+  background-color: black;
   color: white;
   font-size: 15px;
 }
@@ -69,5 +61,5 @@ input[type="submit"] {
 }
 
 .login-box p > a {
-  color: #050912;
+  color: black;
 }

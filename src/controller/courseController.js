@@ -1,11 +1,12 @@
 const router = require('express').Router();
-const gameService = require('../services/gameServices');
+const courseService = require('../services/courseServices');
 
 // const { isAuth } = require('../middlewares/authMiddleware');
 
 router.get('/catalog', async (req, res) => {
-    let games = await gameService.getAll();
-    res.render('games/catalog', { games });
+    let courses = await courseService.getAll();
+    console.log('courses:', courses);
+    res.render('courses/catalog', { courses });
 });
 
 router.get('/create', (req, res) => {
