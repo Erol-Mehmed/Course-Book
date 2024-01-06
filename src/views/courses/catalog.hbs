@@ -7,26 +7,7 @@
 
     <!--If there are course in the database, show each one-->
     {{#each courses}}
-    <article class="all-course-card">
-      <article class="all-course-card-image">
-        <!-- Do not forget to change the path to the image -->
-        <img
-          src="https://cdn.pixabay.com/photo/2015/08/24/20/13/welcome-905562_1280.png"
-        />
-      </article>
-
-      <article class="all-course-card-content">
-        <!--You must put the headline value in <h2>-->
-        <h2>Spanish 1-4: Beginner, Elementary</h2>
-        <!--You must put the headline value in <h3>-->
-        <h3>Type: Language</h3>
-        <h3>Price: €15</h3>
-      </article>
-
-      <article class="all-course-card-buttons">
-        <a href="#" class="btn-details">Details</a>
-      </article>
-    </article>
+      {{> courses-card}}
     {{else}}
     <!--If there are still no blogs in the database display:-->
     <article class="not-available-courses">

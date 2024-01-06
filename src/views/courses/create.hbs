@@ -2,24 +2,24 @@
   <section id="create-container">
     <div class="create-container-info">
       <h1>Create Course</h1>
-      <form>
+      <form action="/courses/create" method="POST">
         <label>Title:</label>
-        <input name="" type="text" id="title" />
+        <input name="title" type="text" id="title" />
 
         <label>Type:</label>
-        <input name="" type="text" id="type" />
+        <input name="type" type="text" id="type" />
 
         <label>Certificate:</label>
-        <input name="" type="text" id="certificate" />
+        <input name="certificate" type="text" id="certificate" />
 
         <label>Image:</label>
-        <input name="" type="text" id="image" placeholder="http://..." />
+        <input name="image" type="text" id="image" placeholder="http://..." />
 
         <label>Description:</label>
-        <textarea id="content" name=""></textarea>
+        <textarea id="content" name="description"></textarea>
 
         <label>Price:</label>
-        <input name="" type="number" id="price" />
+        <input name="price" type="number" id="price" />
 
         <input type="submit" id="btn" value="Create" />
       </form>

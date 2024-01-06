@@ -1,25 +1,22 @@
 const router = require('express').Router();
 const courseService = require('../services/courseServices');
 
-// const { isAuth } = require('../middlewares/authMiddleware');
-
 router.get('/catalog', async (req, res) => {
     let courses = await courseService.getAll();
-    console.log('courses:', courses);
     res.render('courses/catalog', { courses });
 });
 
 router.get('/create', (req, res) => {
-    res.render('games/create')
+    res.render('courses/create')
 });
 
 router.post('/create', async (req, res) => {
     try {
-        await gameService.create({ ...req.body, owner: req.user._id });
-        res.redirect('/games/catalog');
+        await courseService.create({ ...req.body, owner: req.user._id });
+        res.redirect('/courses/catalog');
     } catch (error) {
         console.log(error);
-        res.render('games/create', { error: getErrorMessage(error) });
+        res.render('courses/create', { error: getErrorMessage(error) });
     }
 });
 
@@ -31,75 +28,74 @@ function getErrorMessage(error) {
     } else {
         return error.message
     }
-
 }
 
-router.get('/details/:gameId', async (req, res) => {
+router.get('/details/:courseId', async (req, res) => {
 
-    let game = await gameService.getOne(req.params.gameId); 
-    let gameData = await game.toObject();
+    let course = await courseService.getOne(req.params.courseId);
+    let courseData = await course.toObject();
 
-    let isOwner = gameData.owner == req.user?._id;
-    let buyer = game.getBuyers();
+    let isOwner = courseData.owner == req.user?._id;
+    let buyer = course.getBuyers();
     let isBought = req.user && buyer.some(c => c._id == req.user?._id);
 
-    res.render('games/details', { ...gameData, isOwner, isBought });
+    res.render('courses/details', { ...courseData, isOwner, isBought });
 });
 
 async function isOwner(req, res, next) {
-    let games = await gameService.getOne(req.params.gameId);
+    let courses = await courseService.getOne(req.params.courseId);
 
-    if (games.owner == req.user._id) {
-        res.redirect(`/games/details/${req.params.gameId}`);
+    if (courses.owner == req.user._id) {
+        res.redirect(`/courses/details/${req.params.courseId}`);
     } else {
         next();
     }
 }
 
-router.get('/buy/:gameId', isOwner, async (req, res) => {
-    let games = await gameService.getOne(req.params.gameId);
+router.get('/buy/:courseId', isOwner, async (req, res) => {
+    let courses = await courseService.getOne(req.params.courseId);
 
-    games.buyer.push(req.user._id);
-    await games.save();
+    courses.buyer.push(req.user._id);
+    await courses.save();
 
-    res.redirect(`/games/details/${req.params.gameId}`);
+    res.redirect(`/courses/details/${req.params.courseId}`);
 
 });
 
 async function checkIsOwner(req, res, next) {
-    let games = await gameService.getOne(req.params.gameId);
+    let courses = await courseService.getOne(req.params.courseId);
 
-    if (games.owner == req.user._id) {
+    if (courses.owner == req.user._id) {
         next();
     } else {
-        res.redirect(`/games/details/${req.params.gameId}`);
+        res.redirect(`/courses/details/${req.params.courseId}`);
     }
 }
 
-router.get('/delete/:gameId', checkIsOwner, async (req, res) => {
+router.get('/delete/:courseId', checkIsOwner, async (req, res) => {
     try {
-        await gameService.delete(req.params.gameId);
+        await courseService.delete(req.params.courseId);
 
-        res.redirect('/games/catalog');
+        res.redirect('/courses/catalog');
     } catch (error) {
-        res.render('games/create', { error: getErrorMessage(error) });
+        res.render('courses/create', { error: getErrorMessage(error) });
     }
 
 });
 
-router.get('/edit/:gameId', checkIsOwner, async (req, res) => {
-    let game = await gameService.getOne(req.params.gameId);
+router.get('/edit/:courseId', checkIsOwner, async (req, res) => {
+    let course = await courseService.getOne(req.params.courseId);
 
-    res.render('games/edit', { ...game.toObject() });
+    res.render('courses/edit', { ...course.toObject() });
 });
 
-router.post('/edit/:gameId', checkIsOwner, async (req, res) => {
+router.post('/edit/:courseId', checkIsOwner, async (req, res) => {
     try {
-        await gameService.updateOne(req.params.gameId, req.body);
+        await courseService.updateOne(req.params.courseId, req.body);
 
-        res.redirect(`/games/details/${req.params.gameId}`);
+        res.redirect(`/courses/details/${req.params.courseId}`);
     } catch {
-        res.render('games/create', { error: getErrorMessage(error) });
+        res.render('courses/create', { error: getErrorMessage(error) });
     }
 
 });

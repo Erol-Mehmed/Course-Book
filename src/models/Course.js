@@ -9,21 +9,19 @@ let coursesSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        validate: /^https?:\/\//i
     },
     certificate: {
-        type: Number,
+        type: String,
         required: true,
-        minValue: 0,
     },
     image: {
         type: String,
         required: true,
+        validate: /^https?:\/\//i
     },
     description: {
         type: String,
         required: true,
-        minLength: 10,
     },
     price: {
         type: Number,
