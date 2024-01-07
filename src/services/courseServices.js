@@ -2,9 +2,9 @@ const Courses = require('../models/Course');
 
 exports.create = (coursesData) => Courses.create(coursesData);
 
-exports.getAll = () => Courses.find().lean();
+exports.getLastThreeCourses = () => Courses.find().sort({ _id: -1 }).limit(3);
 
-exports.getOne = (courseId) => Courses.findById(courseId).populate('buyer');
+exports.getAll = () => Courses.find().lean();
 
 exports.delete = (courseId) => Courses.findByIdAndDelete(courseId);
 

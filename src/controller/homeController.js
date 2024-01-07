@@ -1,23 +1,10 @@
 const router = require('express').Router();
-const gameService = require('../services/courseServices');
+const courseService = require('../services/courseServices');
 
-router.get('/', (req, res) => {
-    res.render('home');
+router.get('/', async (req, res) => {
+    const lastThreeCourses = await courseService.getLastThreeCourses();
+    console.log('last three:', lastThreeCourses);
+    res.render('home', { lastThreeCourses });
 });
-
-router.get('/search', async (req, res) => {
-    let gameText = req.query.name;
-    let gamePlat = req.query.platform;
-
-    let game = await gameService.search(gameText, gamePlat);
-
-    if (game == undefined) {
-        game = await gameService.getAll();
-    }
-
-    console.log(game);
-
-    res.render('search', { game })
-})
 
 module.exports = router;

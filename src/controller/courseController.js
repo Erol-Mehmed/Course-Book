@@ -2,7 +2,7 @@ const router = require('express').Router();
 const courseService = require('../services/courseServices');
 
 router.get('/catalog', async (req, res) => {
-    let courses = await courseService.getAll();
+    const courses = await courseService.getAll();
     res.render('courses/catalog', { courses });
 });
 
@@ -21,7 +21,7 @@ router.post('/create', async (req, res) => {
 });
 
 function getErrorMessage(error) {
-    let errorsArr = Object.keys(error.errors);
+    const errorsArr = Object.keys(error.errors);
 
     if (errorsArr.length > 0) {
         return error.errors[errorsArr[0]];
@@ -32,18 +32,18 @@ function getErrorMessage(error) {
 
 router.get('/details/:courseId', async (req, res) => {
 
-    let course = await courseService.getOne(req.params.courseId);
-    let courseData = await course.toObject();
+    const course = await courseService.getOne(req.params.courseId);
+    const courseData = await course.toObject();
 
-    let isOwner = courseData.owner == req.user?._id;
-    let buyer = course.getBuyers();
-    let isBought = req.user && buyer.some(c => c._id == req.user?._id);
+    const isOwner = courseData.owner == req.user?._id;
+    const buyer = course.getBuyers();
+    const isBought = req.user && buyer.some(c => c._id == req.user?._id);
 
     res.render('courses/details', { ...courseData, isOwner, isBought });
 });
 
 async function isOwner(req, res, next) {
-    let courses = await courseService.getOne(req.params.courseId);
+    const courses = await courseService.getOne(req.params.courseId);
 
     if (courses.owner == req.user._id) {
         res.redirect(`/courses/details/${req.params.courseId}`);
@@ -53,7 +53,7 @@ async function isOwner(req, res, next) {
 }
 
 router.get('/buy/:courseId', isOwner, async (req, res) => {
-    let courses = await courseService.getOne(req.params.courseId);
+    const courses = await courseService.getOne(req.params.courseId);
 
     courses.buyer.push(req.user._id);
     await courses.save();
@@ -63,7 +63,7 @@ router.get('/buy/:courseId', isOwner, async (req, res) => {
 });
 
 async function checkIsOwner(req, res, next) {
-    let courses = await courseService.getOne(req.params.courseId);
+    const courses = await courseService.getOne(req.params.courseId);
 
     if (courses.owner == req.user._id) {
         next();
@@ -80,11 +80,10 @@ router.get('/delete/:courseId', checkIsOwner, async (req, res) => {
     } catch (error) {
         res.render('courses/create', { error: getErrorMessage(error) });
     }
-
 });
 
 router.get('/edit/:courseId', checkIsOwner, async (req, res) => {
-    let course = await courseService.getOne(req.params.courseId);
+    const course = await courseService.getOne(req.params.courseId);
 
     res.render('courses/edit', { ...course.toObject() });
 });
@@ -97,7 +96,6 @@ router.post('/edit/:courseId', checkIsOwner, async (req, res) => {
     } catch {
         res.render('courses/create', { error: getErrorMessage(error) });
     }
-
 });
 
 module.exports = router;
