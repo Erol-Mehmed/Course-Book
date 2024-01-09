@@ -7,7 +7,9 @@
     
     {{#if lastThreeCourses}}
     <div class="last-course">
-      {{> home-courses-card}}
+      {{#each lastThreeCourses}}
+        {{> home-courses-card}}
+      {{/each}}
     </div>
     {{else}}
     <!-- If there are still no course posts on the database -->

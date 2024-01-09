@@ -31,35 +31,10 @@ function getErrorMessage(error) {
 }
 
 router.get('/details/:courseId', async (req, res) => {
-
-    const course = await courseService.getOne(req.params.courseId);
-    const courseData = await course.toObject();
-
+    const courseData = await courseService.getOne(req.params.courseId);
     const isOwner = courseData.owner == req.user?._id;
-    const buyer = course.getBuyers();
-    const isBought = req.user && buyer.some(c => c._id == req.user?._id);
 
-    res.render('courses/details', { ...courseData, isOwner, isBought });
-});
-
-async function isOwner(req, res, next) {
-    const courses = await courseService.getOne(req.params.courseId);
-
-    if (courses.owner == req.user._id) {
-        res.redirect(`/courses/details/${req.params.courseId}`);
-    } else {
-        next();
-    }
-}
-
-router.get('/buy/:courseId', isOwner, async (req, res) => {
-    const courses = await courseService.getOne(req.params.courseId);
-
-    courses.buyer.push(req.user._id);
-    await courses.save();
-
-    res.redirect(`/courses/details/${req.params.courseId}`);
-
+    res.render('courses/details', { ...courseData, isOwner });
 });
 
 async function checkIsOwner(req, res, next) {

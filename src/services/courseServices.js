@@ -2,7 +2,9 @@ const Courses = require('../models/Course');
 
 exports.create = (coursesData) => Courses.create(coursesData);
 
-exports.getLastThreeCourses = () => Courses.find().sort({ _id: -1 }).limit(3);
+exports.getLastThreeCourses = () => Courses.find().sort({ _id: -1 }).limit(3).lean();
+
+exports.getOne = (courseId) => Courses.findById(courseId).lean();
 
 exports.getAll = () => Courses.find().lean();
 
