@@ -40,9 +40,9 @@ let coursesSchema = new mongoose.Schema({
 });
 
 coursesSchema.method('getSignUpList', function () {
-    return this.signUpList.map(x => x._id);
+    return this.signUpList.map(x => x);
 });
 
-let Courses = mongoose.model('Courses', coursesSchema);
+const Courses = mongoose.model('Courses', coursesSchema);
 
 module.exports = Courses;
