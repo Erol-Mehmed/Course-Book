@@ -12,9 +12,12 @@
       <h3>Price: €{{courseData.price}}</h3>
       <h3>By: {{courseData.email}}</h3>
       <!--If there are sign up users-->
-      <h4>Signed By: {{courseData.getSignUpList}}</h4>
-      <!--If there are no sign up users-->
-      <h4>Nobody has signed in for this course yet</h4>
+      {{#if courseData.signUpList}}
+        <h4>Signed By: {{courseData.signUpList}}</h4>
+        <!--If there are no sign up users-->
+      {{else}}
+        <h4>Nobody has signed in for this course yet</h4>
+      {{/if}}
     </div>
     <div class="details-container-content">
       <p>Curabitur fringilla nec urna sit amet eleifend. Suspendisse sodales
@@ -26,20 +29,21 @@
         tellus.</p>
     </div>
     {{#if isUser}}
-    <div  class="btn-container">
-      <!-- Only for registered user and creator of the course-->
-      {{#if isOwner }}
-      <a href="#">Edit</a>
-      <a href="#">Delete</a>
-      {{/if}}
-      <!-- logged in user who has not yet sign up for the course-->
-      {{#if notEnrolled}}
-      <a href="/courses/details/{{_id}}?singUp=1">Sign up</a>
-      {{else}}
-      <!-- logged in user who has already sign up for the course-->
-      <p class="sign-up">You've already signed up for this course!</p>
-      {{/if}}
-    </div>
+      <div class="btn-container">
+        <!-- Only for registered user and creator of the course-->
+        {{#if isOwner}}
+          <a href="#">Edit</a>
+          <a href="#">Delete</a>
+        {{else}}
+          <!-- logged in user who has not yet sign up for the course-->
+          {{#if notEnrolled}}
+            <a href="/courses/details/{{courseData._id}}?signUp=1">Sign up</a>
+          {{else}}
+            <!-- logged in user who has already sign up for the course-->
+            <p class="sign-up">You've already signed up for this course!</p>
+          {{/if}}
+        {{/if}}
+      </div>
     {{/if}}
   </div>
 </main>

@@ -7,7 +7,7 @@ router.get('/catalog', async (req, res) => {
 });
 
 router.get('/create', (req, res) => {
-    res.render('courses/create')
+    res.render('courses/create');
 });
 
 router.post('/create', async (req, res) => {
@@ -31,17 +31,31 @@ function getErrorMessage(error) {
 }
 
 router.get('/details/:courseId', async (req, res) => {
+    const { signUp } = req.query;
+
+    if (signUp) {
+        await enrollUser(req, res);
+    }
+
     const course = await courseService.getOne(req.params.courseId);
     const courseData = course.toObject();
     const isUser = Boolean(req.user);
     const isOwner = courseData.owner == req.user?._id;
-    const { singUp } = req.query;
-    const notEnrolled = !singUp;
+    const notEnrolled = !signUp && !courseData.signUpList.some(obj => obj.userId.toString() === req.user?._id);
+    courseData.signUpList = course.getSignUpList();
 
-    console.log('course controller:', course.getSignUpList());
+    console.log(course.getSignUpList(), req.user?._id, notEnrolled);
 
     res.render('courses/details', { courseData, isUser, isOwner, notEnrolled });
 });
+
+async function enrollUser(req, res) {
+    try {
+        await courseService.enroll(req.params.courseId, req.user?._id, req.user.username);
+    } catch (error) {
+        res.render('courses/details', { error: error.message });
+    }
+}
 
 async function checkIsOwner(req, res, next) {
     const courses = await courseService.getOne(req.params.courseId);
@@ -50,14 +64,6 @@ async function checkIsOwner(req, res, next) {
         next();
     } else {
         res.redirect(`/courses/details/${req.params.courseId}`);
-    }
-}
-
-async function enrollUser(req, res) {
-    try {
-        await courseService.enroll(req.params.courseId, req.user._id);
-    } catch (error) {
-        res.render('courses/details', { error: error.message });
     }
 }
 

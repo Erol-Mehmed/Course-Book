@@ -12,4 +12,4 @@ exports.delete = (courseId) => Courses.findByIdAndDelete(courseId);
 
 exports.updateOne = (courseId, coursesData) => Courses.findByIdAndUpdate(courseId, coursesData);
 
-exports.enroll = (courseId, userId) => Courses.findByIdAndUpdate(courseId, { $push: { signUpList: userId }}, { new: true });
+exports.enroll = (courseId, userId, username) => Courses.findByIdAndUpdate(courseId, { $addToSet: { signUpList: { userId, username } } });

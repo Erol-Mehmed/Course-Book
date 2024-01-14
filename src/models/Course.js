@@ -29,9 +29,15 @@ let coursesSchema = new mongoose.Schema({
     },
     signUpList: [
         {
-            type: mongoose.Types.ObjectId,
-            ref: 'User'
-        },
+            userId: {
+                type: String,
+                required: true,
+            },
+            username: {
+                type: String,
+                required: true,
+            }
+        }
     ],
     owner: {
         type: mongoose.Types.ObjectId,
