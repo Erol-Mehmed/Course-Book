@@ -35,6 +35,7 @@ router.get('/details/:courseId', async (req, res) => {
 
     if (signUp) {
         await enrollUser(req, res);
+        res.redirect(`/courses/details/${req.params.courseId}`);
     }
 
     const course = await courseService.getOne(req.params.courseId);
@@ -42,9 +43,7 @@ router.get('/details/:courseId', async (req, res) => {
     const isUser = Boolean(req.user);
     const isOwner = courseData.owner == req.user?._id;
     const notEnrolled = !signUp && !courseData.signUpList.some(obj => obj.userId.toString() === req.user?._id);
-    courseData.signUpList = course.getSignUpList();
-
-    console.log(course.getSignUpList(), req.user?._id, notEnrolled);
+    courseData.signUpList = course.getSignUpList().map(obj => obj.username).join(', ');
 
     res.render('courses/details', { courseData, isUser, isOwner, notEnrolled });
 });
@@ -57,33 +56,18 @@ async function enrollUser(req, res) {
     }
 }
 
-async function checkIsOwner(req, res, next) {
-    const courses = await courseService.getOne(req.params.courseId);
-
-    if (courses.owner == req.user._id) {
-        next();
-    } else {
-        res.redirect(`/courses/details/${req.params.courseId}`);
-    }
-}
-
-router.get('/delete/:courseId', checkIsOwner, async (req, res) => {
+router.get('/delete/:courseId', async (req, res) => {
     try {
+        console.log('worked');
         await courseService.delete(req.params.courseId);
 
         res.redirect('/courses/catalog');
     } catch (error) {
-        res.render('courses/create', { error: getErrorMessage(error) });
+        res.render(`/courses/details/${req.params.courseId}`, { error: getErrorMessage(error) });
     }
 });
 
-router.get('/edit/:courseId', checkIsOwner, async (req, res) => {
-    const course = await courseService.getOne(req.params.courseId);
-
-    res.render('courses/edit', { ...course.toObject() });
-});
-
-router.post('/edit/:courseId', checkIsOwner, async (req, res) => {
+router.post('/edit/:courseId', async (req, res) => {
     try {
         await courseService.updateOne(req.params.courseId, req.body);
 

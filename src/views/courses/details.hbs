@@ -20,24 +20,18 @@
       {{/if}}
     </div>
     <div class="details-container-content">
-      <p>Curabitur fringilla nec urna sit amet eleifend. Suspendisse sodales
-        vitae tellus sit amet dictum. Vivamus condimentum blandit interdum.
-        Donec ac placerat enim. Pellentesque elementum condimentum massa, id
-        condimentum lorem maximus sit amet. Vivamus accumsan imperdiet urna,
-        eget malesuada felis iaculis quis. Nunc orci neque, blandit nec lorem
-        eu, mattis porta erat. Etiam et imperdiet tellus. Nulla ac gravida
-        tellus.</p>
+      <p>{{courseData.description}}</p>
     </div>
     {{#if isUser}}
       <div class="btn-container">
         <!-- Only for registered user and creator of the course-->
         {{#if isOwner}}
-          <a href="#">Edit</a>
-          <a href="#">Delete</a>
+          <a href="?edit=1">Edit</a>
+          <a href="?delete=1">Delete</a>
         {{else}}
           <!-- logged in user who has not yet sign up for the course-->
           {{#if notEnrolled}}
-            <a href="/courses/details/{{courseData._id}}?signUp=1">Sign up</a>
+            <a href="?signUp=1">Sign up</a>
           {{else}}
             <!-- logged in user who has already sign up for the course-->
             <p class="sign-up">You've already signed up for this course!</p>
