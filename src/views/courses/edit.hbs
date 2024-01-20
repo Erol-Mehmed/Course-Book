@@ -2,36 +2,35 @@
   <section id="edit-container">
     <div class="edit-container-info">
       <h1>Edit Course</h1>
-      <form>
+      <form action="/courses/edit/{{courseData._id}}" method="POST">
         <label>Title:</label>
         <input
-          name=""
+          name="title"
           type="text"
           id="title"
-          value="Classroom Management Essentials"
+          value="{{courseData.title}}"
         />
 
         <label>Type:</label>
-        <input name="" type="text" id="type" value="Management" />
+        <input name="type" type="text" id="type" value="{{courseData.type}}" />
 
         <label>Certificate:</label>
-        <input name="" type="text" id="certificate" value="Yes" />
+        <input name="certificate" type="text" id="certificate" value="{{courseData.certificate}}" />
 
         <label>Image:</label>
         <input
-          name=""
+          name="image"
           type="text"
           id="image"
           placeholder="http://..."
-          value="https://cdn.pixabay.com/photo/2020/08/09/14/25/business-5475660_1280.jpg"
+          value="{{courseData.image}}"
         />
 
         <label>Description:</label>
-        <textarea id="content" name="">Learn how to manage your classroom and
-          spend more time teaching rather than disciplining</textarea>
+        <textarea id="content" name="description">{{courseData.description}}</textarea>
 
         <label>Price:</label>
-        <input name="" type="number" id="price" value="25" />
+        <input name="price" type="number" id="price" value="{{courseData.price}}" />
 
         <input type="submit" id="btn" value="Edit" />
       </form>

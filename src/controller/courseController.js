@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const courseService = require('../services/courseServices');
+const Course = require('../models/Course');
 
 router.get('/catalog', async (req, res) => {
     const courses = await courseService.getAll();
@@ -13,9 +14,9 @@ router.get('/create', (req, res) => {
 router.post('/create', async (req, res) => {
     try {
         await courseService.create({ ...req.body, owner: req.user._id });
+
         res.redirect('/courses/catalog');
     } catch (error) {
-        console.log(error);
         res.render('courses/create', { error: getErrorMessage(error) });
     }
 });
@@ -48,33 +49,51 @@ router.get('/details/:courseId', async (req, res) => {
     res.render('courses/details', { courseData, isUser, isOwner, notEnrolled });
 });
 
+router.get('/delete/:courseId', isOwner, async (req, res) => {
+    await courseService.delete(req.params.courseId);
+
+    res.redirect('/courses/catalog');
+});
+
+router.get('/edit/:courseId', isOwner, async (req, res) => {
+    const course = await courseService.getOne(req.params.courseId);
+    const courseData = course.toObject();
+
+    res.render('courses/edit', { courseData });
+});
+
+router.post('/edit/:courseId', async (req, res) => {
+    try {
+        await Course.validate(req.body);
+        await courseService.updateOne(req.params.courseId, req.body);
+
+        res.redirect(`/courses/details/${req.params.courseId}`);
+    } catch (error) {
+        const courseData = req.body;
+        courseData._id = req.params.courseId;
+
+        res.render('courses/edit', { error: getErrorMessage(error), courseData });
+    }
+});
+
+async function isOwner(req, res, next) {
+    const course = await courseService.getOne(req.params.courseId);
+    const courseData = course.toObject();
+    const isOwner = courseData.owner == req.user?._id;
+
+    if (isOwner) {
+        next()
+    } else {
+        res.render('404');
+    }
+};
+
 async function enrollUser(req, res) {
     try {
         await courseService.enroll(req.params.courseId, req.user?._id, req.user.username);
     } catch (error) {
         res.render('courses/details', { error: error.message });
     }
-}
-
-router.get('/delete/:courseId', async (req, res) => {
-    try {
-        console.log('worked');
-        await courseService.delete(req.params.courseId);
-
-        res.redirect('/courses/catalog');
-    } catch (error) {
-        res.render(`/courses/details/${req.params.courseId}`, { error: getErrorMessage(error) });
-    }
-});
-
-router.post('/edit/:courseId', async (req, res) => {
-    try {
-        await courseService.updateOne(req.params.courseId, req.body);
-
-        res.redirect(`/courses/details/${req.params.courseId}`);
-    } catch {
-        res.render('courses/create', { error: getErrorMessage(error) });
-    }
-});
+};
 
 module.exports = router;
