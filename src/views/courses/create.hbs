@@ -4,22 +4,22 @@
       <h1>Create Course</h1>
       <form action="/courses/create" method="POST">
         <label>Title:</label>
-        <input name="title" type="text" id="title" />
+        <input name="title" type="text" id="title" value="{{courseData.title}}" />
 
         <label>Type:</label>
-        <input name="type" type="text" id="type" />
+        <input name="type" type="text" id="type" value="{{courseData.type}}" />
 
         <label>Certificate:</label>
-        <input name="certificate" type="text" id="certificate" />
+        <input name="certificate" type="text" id="certificate" value="{{courseData.certificate}}" />
 
         <label>Image:</label>
-        <input name="image" type="text" id="image" placeholder="http://..." />
+        <input name="image" type="text" id="image" placeholder="http://..." value="{{courseData.image}}" />
 
         <label>Description:</label>
-        <textarea id="content" name="description"></textarea>
+        <textarea id="content" name="description">{{courseData.description}}</textarea>
 
         <label>Price:</label>
-        <input name="price" type="number" id="price" />
+        <input name="price" type="number" id="price" value="{{courseData.price}}" />
 
         <input type="submit" id="btn" value="Create" />
       </form>

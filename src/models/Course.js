@@ -4,15 +4,17 @@ let coursesSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        minLength: 4,
+        minLength: 5,
     },
     type: {
         type: String,
         required: true,
+        minLength: 3,
     },
     certificate: {
         type: String,
         required: true,
+        minLength: 2,
     },
     image: {
         type: String,
@@ -22,10 +24,12 @@ let coursesSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true,
+        minLength: 10,
     },
     price: {
         type: Number,
         required: true,
+        min: 0,
     },
     signUpList: [
         {

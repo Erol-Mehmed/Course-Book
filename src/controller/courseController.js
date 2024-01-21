@@ -17,19 +17,9 @@ router.post('/create', async (req, res) => {
 
         res.redirect('/courses/catalog');
     } catch (error) {
-        res.render('courses/create', { error: getErrorMessage(error) });
+        res.render('courses/create', { error: getErrorMessage(error), courseData: req.body });
     }
 });
-
-function getErrorMessage(error) {
-    const errorsArr = Object.keys(error.errors);
-
-    if (errorsArr.length > 0) {
-        return error.errors[errorsArr[0]];
-    } else {
-        return error.message;
-    }
-}
 
 router.get('/details/:courseId', async (req, res) => {
     const { signUp } = req.query;
@@ -95,5 +85,15 @@ async function enrollUser(req, res) {
         res.render('courses/details', { error: error.message });
     }
 };
+
+function getErrorMessage(error) {
+    const errorsArr = Object.keys(error.errors);
+
+    if (errorsArr.length > 0) {
+        return error.errors[errorsArr[0]];
+    } else {
+        return error.message;
+    }
+}
 
 module.exports = router;
